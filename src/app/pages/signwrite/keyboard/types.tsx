@@ -1,12 +1,7 @@
 export type Option<LabelT extends string = string> = {
   key: string;
   label: LabelT;
-  variants?: [
-    {
-      modifiers: string[];
-      key: string;
-    }
-  ];
+  selected?: boolean;
 };
 
 export type OptionMap<LabelT extends string = string> = Record<string, Omit<Option<LabelT>, "key">>;
@@ -30,3 +25,16 @@ export const toggleFingerInMap = (fingerMap: FingerMap, finger: Finger) => ({
 
 export const toggleArrayEntry = <T,>(arr: T[], entry: T): T[] =>
   arr.includes(entry) ? arr.filter((arrEntry) => arrEntry !== entry) : [...arr, entry];
+
+export interface SignState {
+  selectedRoot?: string;
+  selectedFingers: FingerMap;
+  selectedFingerVariants: FingerMap<string[]>;
+  currentRevealedVariants: string[];
+}
+
+export const getDefaultSignState = (): SignState => ({
+  selectedFingers: {},
+  selectedFingerVariants: {},
+  currentRevealedVariants: [],
+});

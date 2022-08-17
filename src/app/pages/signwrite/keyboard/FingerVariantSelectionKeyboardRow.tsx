@@ -1,55 +1,9 @@
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Typography from "@mui/material/Typography";
+import { getSelectVariantAction, getVariantOptions } from "./fingerData";
 import { KeyboardButton } from "./KeyboardButton";
-import { Dispatch, fingerIndices, FingerMap, toggleArrayEntry } from "./types";
-import { useKeyPress } from "./useKeyPress";
-import { fingerCombos, getOptions } from "./FingerKeyboardRow";
+import { Dispatch, SignState } from "./types";
 
 const fingerVariantSelectionNativeKeys = [..."zxcvbnm,./"];
-
-const getVariantOptions = ({
-  selectedRoot,
-  selectedFingers,
-  currentRevealedVariants,
-}: {
-  selectedRoot?: string;
-  selectedFingers: FingerMap;
-  currentRevealedVariants: string[];
-}): Array<{
-  key: string;
-  pose: [string[], string[], string[], string[], string[]];
-}> => {
-  if (!selectedRoot) {
-    return [];
-  }
-
-  const { selectedOptions } = getOptions({ selectedRoot, selectedFingers });
-  if (!selectedOptions.length) {
-    return [];
-  }
-
-  const comboKey = selectedOptions.map((option) => option.key).join("");
-
-  const possibleVariants = Object.entries(fingerCombos[selectedRoot]?.[comboKey]?.variants || {}).map(
-    ([key, pose]) => ({
-      key,
-      pose,
-    })
-  );
-
-  return possibleVariants.filter((variant) => {
-    const uniqueKeys = Object.keys(
-      variant.pose
-        .flatMap((v) => v)
-        .reduce((part, nextModifier) => ({ ...part, [nextModifier.split(":")[0]]: true }), {})
-    );
-    return (
-      currentRevealedVariants.length &&
-      currentRevealedVariants.every((currentVariant) => uniqueKeys.includes(currentVariant)) &&
-      Math.abs(currentRevealedVariants.length - uniqueKeys.length) <= 1
-    );
-  });
-};
 
 export const equalArr = (a: string[], b: string[]) =>
   a.length === b.length && a.every((val, index) => val === b[index]);
@@ -57,26 +11,19 @@ export const equalNestedArr = (a: string[][], b: string[][]) =>
   a.length === b.length && a.every((subA, index) => equalArr(subA, b[index]));
 
 export const FingerVariantSelectionKeyboardRow = ({
-  selectedRoot,
-  selectedFingers,
-  selectedFingerVariants,
-  setSelectedFingerVariants,
-  currentRevealedVariants,
+  sign,
+  setSign,
 }: {
-  selectedRoot?: string;
-  selectedFingers: FingerMap;
-
-  selectedFingerVariants: FingerMap<string[]>;
-  setSelectedFingerVariants: Dispatch<FingerMap<string[]>>;
-  currentRevealedVariants: string[];
+  sign: SignState;
+  setSign: Dispatch<SignState>;
 }) => {
-  const options = getVariantOptions({ selectedRoot, selectedFingers, currentRevealedVariants });
+  const options = getVariantOptions(sign);
   const [selectedThumb, selectedIndex, selectedMiddle, selectedRing, selectedLittle] = [
-    selectedFingerVariants.thumb || [],
-    selectedFingerVariants.index || [],
-    selectedFingerVariants.middle || [],
-    selectedFingerVariants.ring || [],
-    selectedFingerVariants.little || [],
+    sign.selectedFingerVariants.thumb || [],
+    sign.selectedFingerVariants.index || [],
+    sign.selectedFingerVariants.middle || [],
+    sign.selectedFingerVariants.ring || [],
+    sign.selectedFingerVariants.little || [],
   ];
 
   const currentOption = options.find(({ pose: [thumb, index, middle, ring, little] }) => {
@@ -89,38 +36,13 @@ export const FingerVariantSelectionKeyboardRow = ({
     ].every(([a, b]) => a.length === b.length && a.every((val, index) => val === b[index]));
   });
 
-  useKeyPress({
-    setState: setSelectedFingerVariants,
-    nextStateFromKey: (pressedKey: string) => {
-      const keyIndex = fingerVariantSelectionNativeKeys.findIndex((key) => key === pressedKey);
-      return keyIndex >= 0 && keyIndex < options.length ? options[keyIndex].pose : undefined;
-    },
-    updatePriorState: (priorSelectedVariants, nextPose) =>
-      equalNestedArr(Object.values(priorSelectedVariants), nextPose)
-        ? {}
-        : nextPose.reduce(
-            (part, nextFinger, index) => ({
-              ...part,
-              [fingerIndices[index]]: nextFinger,
-            }),
-            {}
-          ),
-  });
-
   return (
     <ToggleButtonGroup
       value={currentOption?.key}
       onChange={(_, nextSelectedVariantsKey: string) => {
         const nextOption = options.find((option) => option.key === nextSelectedVariantsKey);
         if (nextOption) {
-          const [thumb, index, middle, ring, little] = nextOption.pose;
-          setSelectedFingerVariants({
-            thumb,
-            index,
-            middle,
-            ring,
-            little,
-          });
+          setSign((priorSign) => getSelectVariantAction(priorSign, nextOption.pose));
         }
       }}
       sx={{ pl: 7.5 }}

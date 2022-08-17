@@ -1,45 +1,19 @@
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import React from "react";
-import { Dispatch, flattenOptionMap, OptionMap } from "./types";
+import { getRootOptions, getSelectedRootAction } from "./fingerData";
 import { KeyboardButton } from "./KeyboardButton";
-import { useKeyPress } from "./useKeyPress";
-
-const rootRow: OptionMap = {
-  "񆅁": { label: "first" },
-  "񂱡": { label: "circle" },
-  "񂰁": { label: "curlicue" },
-  "񂙡": { label: "claw" },
-  "񂡁": { label: "hook" },
-  "񂤁": { label: "cup" },
-  "񂳁": { label: "oval" },
-  "񂼁": { label: "hinge" },
-  "񃈁": { label: "angle" },
-  "񂇡": { label: "flat" },
-};
+import { Dispatch, SignState } from "./types";
 
 const rootNativeKeys = [..."1234567890-="];
 
-export const RootKeyboardRow = ({
-  selectedRoot,
-  setSelectedRoot,
-}: {
-  selectedRoot?: string;
-  setSelectedRoot: Dispatch<string | undefined>;
-}) => {
-  const options = flattenOptionMap(rootRow);
-
-  useKeyPress({
-    setState: setSelectedRoot,
-    nextStateFromKey: (pressedKey: string) => {
-      const keyIndex = rootNativeKeys.findIndex((key) => key === pressedKey);
-      return keyIndex >= 0 && keyIndex < options.length ? options[keyIndex].key : undefined;
-    },
-    updatePriorState: (priorSelectedRoot, nextSelectedRoot) =>
-      priorSelectedRoot === nextSelectedRoot ? undefined : nextSelectedRoot,
-  });
+export const RootKeyboardRow = ({ sign, setSign }: { sign: SignState; setSign: Dispatch<SignState> }) => {
+  const options = getRootOptions();
 
   return (
-    <ToggleButtonGroup exclusive value={selectedRoot} onChange={(_, nextValue: string) => setSelectedRoot(nextValue)}>
+    <ToggleButtonGroup
+      exclusive
+      value={sign.selectedRoot}
+      onChange={(_, nextValue: string) => setSign((priorSign) => getSelectedRootAction(priorSign, nextValue))}
+    >
       {options.map((option, index) => (
         <KeyboardButton key={index} value={option.key} display={option.key} topLeftCaption={rootNativeKeys[index]} />
       ))}

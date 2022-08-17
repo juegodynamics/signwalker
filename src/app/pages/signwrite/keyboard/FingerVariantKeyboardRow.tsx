@@ -1,90 +1,19 @@
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
+import { fingerVariants, getPossibleVariants, getRevealVariantAction } from "./fingerData";
 import { KeyboardButton } from "./KeyboardButton";
-import { Dispatch, toggleArrayEntry, FingerMap } from "./types";
-import { useKeyPress } from "./useKeyPress";
-import { getOptions, fingerCombos } from "./FingerKeyboardRow";
+import { Dispatch, SignState } from "./types";
 
 const fingerVariantNativeKeys = [..."asdfghjkl;'"];
-
-export const fingerVariants = {
-  cupped: "񅊡񅢡",
-  circled: "񅊡񅡁",
-  hooked: "񅊡񅙡",
-  hinged: "񀀡񀑁",
-  bent: "񀀡񀉡",
-  raised_knuckle: "񀀡񀎁",
-  under: "񆅁񆂁",
-  conjoined: "񀕡񀠁",
-  crossed: "񀕡񀧡",
-  forward: "񅊡񅖡",
-  between: "񁁁񁂡",
-};
-
-const getPossibleVariants = ({
-  selectedRoot,
-  selectedFingers,
-}: {
-  selectedRoot?: string;
-  selectedFingers: FingerMap;
-}): string[] => {
-  if (!selectedRoot) {
-    return [];
-  }
-
-  const { selectedOptions } = getOptions({ selectedRoot, selectedFingers });
-  if (!selectedOptions.length) {
-    return [];
-  }
-
-  const comboKey = selectedOptions.map((option) => option.key).join("");
-
-  const possibleVariants = Object.entries(fingerCombos[selectedRoot]?.[comboKey]?.variants || {}).map(
-    ([key, pose]) => ({
-      key,
-      pose,
-    })
-  );
-
-  return possibleVariants
-    .flatMap((variant) => variant.pose)
-    .flatMap((poses) => poses)
-    .flatMap((poses) => poses.split(":")[0]);
-};
-
-export const FingerVariantKeyboardRow = ({
-  selectedRoot,
-  selectedFingers,
-  currentRevealedVariants,
-  setCurrentRevealedVariants,
-}: {
-  selectedRoot?: string;
-  selectedFingers: FingerMap;
-  currentRevealedVariants: string[];
-  setCurrentRevealedVariants: Dispatch<string[]>;
-}) => {
+export const FingerVariantKeyboardRow = ({ sign, setSign }: { sign: SignState; setSign: Dispatch<SignState> }) => {
   const options = Object.entries(fingerVariants).map(([label, key]) => ({ key, label }));
-  const possibleVariants = getPossibleVariants({ selectedRoot, selectedFingers });
-
-  useKeyPress({
-    setState: setCurrentRevealedVariants,
-    nextStateFromKey: (pressedKey: string) => {
-      const keyIndex = fingerVariantNativeKeys.findIndex((key) => key === pressedKey);
-      return keyIndex >= 0 && keyIndex < options.length ? options[keyIndex].label : undefined;
-    },
-    updatePriorState: (priorRevealedVariants, nextRevealedVariant) =>
-      toggleArrayEntry(priorRevealedVariants, nextRevealedVariant),
-    // releasePriorState: (priorRevealedVariants, nextRevealedVariant) =>
-    //   priorRevealedVariants.includes(nextRevealedVariant)
-    //     ? priorRevealedVariants.filter((priorVariant) => priorVariant !== nextRevealedVariant)
-    //     : priorRevealedVariants,
-  });
+  const possibleVariants = getPossibleVariants(sign);
 
   return (
     <ToggleButtonGroup
-      value={currentRevealedVariants}
+      value={sign.currentRevealedVariants}
       onChange={(_, nextRevealedVariants: string[]) => {
-        setCurrentRevealedVariants(nextRevealedVariants);
+        setSign((priorSign) => getRevealVariantAction(priorSign, nextRevealedVariants));
       }}
       sx={{ pl: 5 }}
     >
