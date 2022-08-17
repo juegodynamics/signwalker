@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.89e02545.css",
-    "main.js": "/static/js/main.d5ad40cf.js",
-    "static/js/787.18a05920.chunk.js": "/static/js/787.18a05920.chunk.js",
-    "static/media/SuttonSignWritingOneD.ttf": "/static/media/SuttonSignWritingOneD.d165d00782e896e3d061.ttf",
-    "index.html": "/index.html",
-    "main.89e02545.css.map": "/static/css/main.89e02545.css.map",
-    "main.d5ad40cf.js.map": "/static/js/main.d5ad40cf.js.map",
-    "787.18a05920.chunk.js.map": "/static/js/787.18a05920.chunk.js.map"
+    "main.css": "/signwalker/static/css/main.89e02545.css",
+    "main.js": "/signwalker/static/js/main.fc8bce99.js",
+    "static/js/787.18a05920.chunk.js": "/signwalker/static/js/787.18a05920.chunk.js",
+    "static/media/SuttonSignWritingOneD.ttf": "/signwalker/static/media/SuttonSignWritingOneD.d165d00782e896e3d061.ttf",
+    "index.html": "/signwalker/index.html",
+    "main.89e02545.css.map": "/signwalker/static/css/main.89e02545.css.map",
+    "main.fc8bce99.js.map": "/signwalker/static/js/main.fc8bce99.js.map",
+    "787.18a05920.chunk.js.map": "/signwalker/static/js/787.18a05920.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.89e02545.css",
-    "static/js/main.d5ad40cf.js"
+    "static/js/main.fc8bce99.js"
   ]
 }
