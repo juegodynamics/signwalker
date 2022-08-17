@@ -1,5 +1,5 @@
 {
-  "name": "portamento",
+  "name": "signwalker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^4.0.0",
     "ts-node": "^10.9.1"
   }
 }
