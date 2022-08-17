@@ -7,7 +7,7 @@ export default function Header() {
     <AppBar component="nav" position="fixed" color="secondary" enableColorOnDark>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Hello
+          񀀡
         </Typography>
       </Toolbar>
     </AppBar>
