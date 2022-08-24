@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.10.0",
+    "@sutton-signwriting/core": "^1.4.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -32,7 +33,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-redeclare": "off",
+      "@typescript-eslint/no-redeclare": "off"
+    }
   },
   "browserslist": {
     "production": [
@@ -47,7 +52,9 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.184",
     "gh-pages": "^4.0.0",
+    "lodash": "^4.17.21",
     "ts-node": "^10.9.1"
   }
 }

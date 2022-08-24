@@ -1,17 +1,36 @@
-import { SignKeyboard } from "./keyboard";
+import Stack from '@mui/material/Stack';
+import {EditorText, useEditorState} from './editor';
+import {Keyboard} from './keyboard';
+import * as signstruct from './signstruct';
 
-export default function SignWriter() {
-  return <SignKeyboard />;
-  // const [selectedRoot, setSelectedRoot] = React.useState<string | undefined>(undefined);
+// const keyboard = new signstruct.handshape.VariantSelectorKeyboard();
 
-  // return (
-  //   <Stack spacing={0} justifyContent="flex-start" alignItems="center" sx={{ height: "100%" }}>
-  //     <Stack justifyContent="center" alignItems="center" sx={{ height: "50%" }}>
-  //       <Typography variant="h1">{resolveKey({ selectedRoot })}</Typography>
-  //     </Stack>
-  //     <Stack spacing={0} direction="column" justifyContent="flex-start" sx={{ height: "30%" }}>
-  //       <RootKeyboardRow selectedRoot={selectedRoot} setSelectedRoot={setSelectedRoot} />
-  //     </Stack>
-  //   </Stack>
-  // );
+export default function SignWalker() {
+  const {text, setText, currentWord, setWord, currentGlyph, setGlyph} =
+    useEditorState();
+
+  return (
+    <Stack
+      spacing={2}
+      justifyContent="center"
+      alignItems="center"
+      sx={{height: '100%'}}
+    >
+      <EditorText text={text} />
+      <Keyboard
+        getkeyLayout={signstruct.handshape.KeyboardConfigurator.getkeyLayout}
+        resolveKey={signstruct.handshape.KeyboardConfigurator.resolveKey}
+        // getAllSelectedGlyphs={
+        //   signstruct.handshape.KeyboardConfigurator.getAllSelectedGlyphs
+        // }
+        getDefaultSelectedKeys={() => signstruct.handshape.defaultSelection}
+        onSelectKeys={({resolvedKey}) => {
+          setGlyph((priorGlyph) => ({
+            ...priorGlyph,
+            character: resolvedKey,
+          }));
+        }}
+      />
+    </Stack>
+  );
 }
