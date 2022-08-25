@@ -1,15 +1,22 @@
-export interface Glyph {
+export type Glyph<
+  SelectionT extends Record<string, any> = Record<string, any>
+> = {
   character: string;
+  selection: SelectionT;
   x: number;
   y: number;
-}
+};
 
-export interface Word {
+export interface Word<
+  SelectionT extends Record<string, any> = Record<string, any>
+> {
   currentGlyphIndex: number;
-  glyphs: Glyph[];
+  glyphs: Glyph<SelectionT>[];
 }
 
-export interface Text {
+export interface Text<
+  SelectionT extends Record<string, any> = Record<string, any>
+> {
   currentWordIndex: number;
-  words: Word[];
+  words: Word<SelectionT>[];
 }

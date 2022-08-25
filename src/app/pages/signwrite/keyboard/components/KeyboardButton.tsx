@@ -2,25 +2,49 @@ import {useTheme} from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import React from 'react';
+import {
+  borderRadiusSize,
+  captionFontSize,
+  previewFontSize,
+  unitHeight,
+  unitSize,
+} from './const';
 
 export const KeyboardButton = ({
   caption,
-  glyph,
+  glyph: Glyph,
   preview,
   onClick,
-  style,
-  widthExtension = 0,
+  isEmpty,
+  isSelected,
+  isHighlighted,
+  isDisabled,
   head,
   mid,
   tail,
   flexGrow,
+  heightMultiplier,
 }: {
   caption: string;
-  glyph?: React.ReactNode;
+  glyph?:
+    | string
+    | React.FunctionComponent<{
+        isEmpty?: boolean;
+        isSelected?: boolean;
+        isHighlighted?: boolean;
+        isDisabled?: boolean;
+        borderRadiusSize: string;
+        captionFontSize: string;
+        previewFontSize: string;
+        unitSize: string;
+      }>;
   preview?: string;
   onClick?: () => void;
-  style?: 'selected' | 'highlighted' | 'disabled';
-  widthExtension?: number;
+  isEmpty?: boolean;
+  isSelected?: boolean;
+  isHighlighted?: boolean;
+  isDisabled?: boolean;
+  heightMultiplier?: number;
   head?: boolean;
   mid?: boolean;
   tail?: boolean;
@@ -34,28 +58,31 @@ export const KeyboardButton = ({
       disableRipple={!onClick}
       disableTouchRipple={!onClick}
       variant={onClick ? 'contained' : 'outlined'}
+      tabIndex={-1}
       // color={style === 'selected' ? 'primary' : 'info'}
       // color={isSelected ? 'primary' : undefined}
       sx={{
         p: 0,
-        color:
-          style === 'selected'
-            ? theme.palette.background.paper
-            : theme.palette.text.primary,
+        color: isSelected
+          ? theme.palette.background.paper
+          : theme.palette.text.primary,
         backgroundColor: onClick
-          ? style === 'selected'
+          ? isSelected
             ? 'primary.main'
             : 'info.main'
           : theme.palette.background.default,
-        transition: 'color 200ms',
-        height: '60px',
+        transition: '0ms',
+        height: heightMultiplier
+          ? `calc(${unitHeight} * ${heightMultiplier})`
+          : unitHeight,
         position: 'relative',
+        minWidth: '0px',
         ...(flexGrow
           ? {flexGrow}
           : {
-              width: `${65 + widthExtension}px`,
+              width: unitSize,
             }),
-        ...((!onClick || style === 'disabled') && {
+        ...((!onClick || isDisabled) && {
           cursor: 'default',
         }),
         ...(!onClick && {borderColor: theme.palette.divider}),
@@ -66,8 +93,8 @@ export const KeyboardButton = ({
           borderBottomRightRadius: '0px',
         }),
         ...(head && {
-          borderTopLeftRadius: '15px',
-          borderBottomLeftRadius: '15px',
+          borderTopLeftRadius: borderRadiusSize,
+          borderBottomLeftRadius: borderRadiusSize,
           ...(!tail && {
             borderTopRightRadius: '0px',
             borderBottomRightRadius: '0px',
@@ -78,57 +105,57 @@ export const KeyboardButton = ({
             borderTopLeftRadius: '0px',
             borderBottomLeftRadius: '0px',
           }),
-          borderTopRightRadius: '15px',
-          borderBottomRightRadius: '15px',
+          borderTopRightRadius: borderRadiusSize,
+          borderBottomRightRadius: borderRadiusSize,
         }),
       }}
     >
-      {/* <Box
-        // elevation={isSelected ? 8 : 0}
-        sx={{
-          height: '100%',
-          width: `100%`,
-          position: 'relative',
-          // backgroundColor: isSelected ? 'secondary.dark' : undefined,
-        }}
-      > */}
-      {glyph &&
-        (typeof glyph === 'string' ? (
+      {Glyph !== undefined &&
+        (typeof Glyph === 'string' ? (
           <Typography
             sx={{
-              fontSize: '1.9em',
-              ...(style === 'highlighted' && {color: 'warning.light'}),
-              ...(style === 'disabled' && {color: 'info.light'}),
+              fontSize: `calc(${unitSize} * 0.45)`,
+              ...(isHighlighted && {color: 'warning.light'}),
+              ...(isDisabled && {color: 'info.light'}),
             }}
           >
-            {glyph}
+            {Glyph}
           </Typography>
         ) : (
-          glyph
+          <Glyph
+            isEmpty={isEmpty}
+            isSelected={isSelected}
+            isHighlighted={isHighlighted}
+            isDisabled={isDisabled}
+            borderRadiusSize={borderRadiusSize}
+            captionFontSize={captionFontSize}
+            previewFontSize={previewFontSize}
+            unitSize={unitSize}
+          />
         ))}
       {caption && (
         <Typography
           variant="caption"
-          color={style === 'selected' ? '#222' : '#888'}
+          color={isSelected ? '#222' : '#888'}
           sx={{
-            fontSize: '0.8em',
+            fontSize: captionFontSize,
             position: 'absolute',
             top: '0px',
-            left: '4px',
+            left: `calc(${borderRadiusSize} * 0.4)`,
           }}
         >
           {caption}
         </Typography>
       )}
-      {preview && style !== 'selected' && (
+      {preview && !isSelected && (
         <Typography
           variant="caption"
           color={'primary.light'}
           sx={{
-            fontSize: '1.2em',
+            fontSize: previewFontSize,
             position: 'absolute',
             top: '0px',
-            right: '4px',
+            right: `calc(${borderRadiusSize} * 0.4)`,
           }}
         >
           {preview}

@@ -1,12 +1,12 @@
-import Header from "./Header";
-import Main from "./Main";
-import Box from "@mui/material/Box";
+import Stack from '@mui/material/Stack';
+import Header from './Header';
+import Main from './Main';
 
-export default function Page({ children }: { children: React.ReactNode }) {
+export default function Page({children}: {children: React.ReactNode}) {
   return (
-    <Box sx={{ height: "100%" }}>
+    <Stack direction="column" sx={{height: '100%'}}>
       <Header />
       <Main>{children}</Main>
-    </Box>
+    </Stack>
   );
 }

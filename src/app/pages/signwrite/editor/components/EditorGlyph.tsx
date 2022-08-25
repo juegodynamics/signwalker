@@ -13,7 +13,7 @@ export const EditorGlyph = ({
   return (
     <text
       x={250 + glyph.x}
-      y={250 + glyph.y - (!glyph.character ? 40 : 0)}
+      y={250 - glyph.y - (!glyph.character ? 40 : 0)}
       fill={
         isFocused ? theme.palette.secondary.light : theme.palette.text.primary
       }
