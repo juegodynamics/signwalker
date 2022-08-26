@@ -126,12 +126,19 @@ export const Keyboard = <SelectionT extends Record<string, any>>({
     [setHeldKeyCodes]
   );
 
+  const handleResetHeldKeys = React.useCallback(() => {
+    setHeldKeyCodes(defaultHeldKeyCodes);
+  }, [setHeldKeyCodes]);
+
   React.useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     window.addEventListener('keyup', handleKeyRaise);
+    window.addEventListener('blur', handleResetHeldKeys);
     return () => {
+      setHeldKeyCodes(defaultHeldKeyCodes);
       window.removeEventListener('keydown', handleKeyPress);
       window.removeEventListener('keyup', handleKeyRaise);
+      window.removeEventListener('blur', handleResetHeldKeys);
     };
   }, [handleKeyPress, handleKeyRaise]);
 
