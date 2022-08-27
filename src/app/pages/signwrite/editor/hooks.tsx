@@ -64,6 +64,7 @@ export const useEditorState = <
     words: [
       {
         currentGlyphIndex: 0,
+        // swu: '',
         glyphs: [
           {
             character: '',

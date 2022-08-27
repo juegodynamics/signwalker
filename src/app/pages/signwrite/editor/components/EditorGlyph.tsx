@@ -12,14 +12,14 @@ export const EditorGlyph = ({
 
   return (
     <text
-      x={250 + glyph.x}
-      y={250 - glyph.y - (!glyph.character ? 40 : 0)}
+      x={62.5 + glyph.x}
+      y={62.5 - glyph.y - (!glyph.character ? 10 : 0)}
       fill={
         isFocused ? theme.palette.secondary.light : theme.palette.text.primary
       }
       alignmentBaseline="middle"
       textAnchor="middle"
-      style={{fontSize: '120px', textAlign: 'center'}}
+      style={{fontSize: '30px', textAlign: 'center'}}
     >
       {glyph.character || '⎶'}
       {!glyph.character && (

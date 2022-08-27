@@ -11,6 +11,7 @@ export interface Word<
   SelectionT extends Record<string, any> = Record<string, any>
 > {
   currentGlyphIndex: number;
+  // swu: string;
   glyphs: Glyph<SelectionT>[];
 }
 

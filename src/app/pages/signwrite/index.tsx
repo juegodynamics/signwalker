@@ -1,6 +1,7 @@
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import React from 'react';
-import {EditorText, useEditorState} from './editor';
+import {EditorText, swuToWord, useEditorState, wordToSwu} from './editor';
 import {Keyboard} from './keyboard';
 import * as signstruct from './signstruct';
 
@@ -25,6 +26,8 @@ export default function SignWalker() {
     defaultSelection: signstruct.defaultSelection,
     resolver: signstruct.KeyboardConfigurator.resolveKey,
   });
+
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const [heldKeys, setHeldKeys] = React.useState<Record<string, boolean>>({});
 
@@ -82,6 +85,22 @@ export default function SignWalker() {
             glyph: '񈗧',
             onClick: () => offsetXY(40, 0),
           },
+        }}
+      />
+      <TextField
+        ref={ref}
+        value={wordToSwu(currentWord.glyphs)}
+        onChange={(e) => {
+          const glyphs = swuToWord(
+            e.target.value,
+            () => signstruct.defaultSelection
+          );
+          setWord((priorWord) => ({
+            ...priorWord,
+            currentGlyphIndex: glyphs.length - 1,
+            glyphs,
+          }));
+          ref.current?.blur();
         }}
       />
     </Stack>

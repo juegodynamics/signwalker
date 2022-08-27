@@ -4,14 +4,14 @@ import * as d from '../types';
 import {EditorWord} from './EditorWord';
 
 export const EditorText = ({text}: {text: d.Text}) => (
-  <Paper variant="outlined" sx={{height: '55vh', width: '100%'}}>
+  <Paper variant="outlined" sx={{height: '50vh', width: '100%'}}>
     <Stack
       direction="column"
       flexWrap="wrap"
       justifyContent="flex-start"
       alignItems="flex-start"
       alignContent="flex-start"
-      sx={{height: '55vh'}}
+      sx={{height: '50vh'}}
     >
       {text.words.map((word, wordIndex) => (
         <EditorWord

@@ -22,7 +22,6 @@ const RootSelection = ({
 }) => (
   <Box sx={{p: `calc(${borderRadiusSize} * 0.22)`, width: '100%'}}>
     <Paper
-      // variant="outlined"
       sx={{
         p: 0,
         width: '100%',
