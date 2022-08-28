@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/signwalker/static/css/main.89e02545.css",
-    "main.js": "/signwalker/static/js/main.97ccfadb.js",
+    "main.js": "/signwalker/static/js/main.f222e4e8.js",
     "static/js/787.18a05920.chunk.js": "/signwalker/static/js/787.18a05920.chunk.js",
     "static/media/SuttonSignWritingOneD.ttf": "/signwalker/static/media/SuttonSignWritingOneD.d165d00782e896e3d061.ttf",
     "index.html": "/signwalker/index.html",
     "main.89e02545.css.map": "/signwalker/static/css/main.89e02545.css.map",
-    "main.97ccfadb.js.map": "/signwalker/static/js/main.97ccfadb.js.map",
+    "main.f222e4e8.js.map": "/signwalker/static/js/main.f222e4e8.js.map",
     "787.18a05920.chunk.js.map": "/signwalker/static/js/787.18a05920.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.89e02545.css",
-    "static/js/main.97ccfadb.js"
+    "static/js/main.f222e4e8.js"
   ]
 }
