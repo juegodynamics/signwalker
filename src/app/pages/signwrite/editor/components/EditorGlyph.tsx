@@ -2,18 +2,27 @@ import {useTheme} from '@mui/material';
 import * as d from '../types';
 
 export const EditorGlyph = ({
+  id,
   glyph,
+  width,
+  height,
   isFocused,
+  yOffset,
 }: {
+  id: string;
   glyph: d.Glyph;
+  width: number;
+  height: number;
   isFocused: boolean;
+  yOffset?: number;
 }) => {
   const theme = useTheme();
 
   return (
     <text
-      x={62.5 + glyph.x}
-      y={62.5 - glyph.y - (!glyph.character ? 10 : 0)}
+      id={id}
+      x={width / 2 + glyph.x}
+      y={height / 2 - glyph.y - (!glyph.character ? 10 : 0) - (yOffset || 0)}
       fill={
         isFocused ? theme.palette.secondary.light : theme.palette.text.primary
       }

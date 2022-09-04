@@ -1,7 +1,7 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Page from './app/nav';
-import SignWriter from './app/pages/signwrite';
+import Signimator from './app/pages/signimator';
 
 const theme = createTheme({
   palette: {
@@ -41,7 +41,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Page>
-        <SignWriter />
+        <Signimator />
       </Page>
     </ThemeProvider>
   );

@@ -118,19 +118,30 @@ export const useEditorState = <
 
   const addGlyph = React.useCallback(
     () =>
-      setWord((priorWord) => ({
-        ...priorWord,
-        currentGlyphIndex: priorWord.currentGlyphIndex + 1,
-        glyphs: [
-          ...priorWord.glyphs,
-          {
-            character: '',
-            x: 0,
-            y: -80 * priorWord.glyphs.length,
-            selection: defaultSelection,
-          },
-        ],
-      })),
+      setWord((priorWord) => {
+        let nextHeight = 0;
+
+        priorWord.glyphs.forEach((glyph, glyphIndex) => {
+          const priorElement = document.getElementById(`${0}-${glyphIndex}`);
+          if (priorElement && priorElement.offsetHeight) {
+            console.log(priorElement.offsetHeight);
+            nextHeight += priorElement.offsetHeight;
+          }
+        });
+        return {
+          ...priorWord,
+          currentGlyphIndex: priorWord.currentGlyphIndex + 1,
+          glyphs: [
+            ...priorWord.glyphs,
+            {
+              character: '',
+              x: 0,
+              y: nextHeight,
+              selection: defaultSelection,
+            },
+          ],
+        };
+      }),
     [setWord]
   );
 

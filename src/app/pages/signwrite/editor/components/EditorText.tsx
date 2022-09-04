@@ -16,6 +16,7 @@ export const EditorText = ({text}: {text: d.Text}) => (
       {text.words.map((word, wordIndex) => (
         <EditorWord
           key={wordIndex}
+          id={`${wordIndex}`}
           word={word}
           isFocused={text.currentWordIndex === wordIndex}
         />
